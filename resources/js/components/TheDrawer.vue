@@ -11,12 +11,29 @@ const drawerWidth = computed(() => {
 
 const navGroup = [
     {
-        title: 'Application Analytics',
+        title: 'Residency Management',
         links: [
             {
                 label: 'Dashboard',
                 icon: 'chart-bar',
                 name: 'dashboard',
+            },
+
+            {
+                label: 'Residences',
+                icon: 'home-group',
+                name: 'residences.index',
+            },
+        ],
+    },
+
+    {
+        title: 'Residential Units Visitors',
+        links: [
+            {
+                label: 'My occupancies',
+                icon: 'lock-outline',
+                name: 'occupancies.index',
             },
         ],
     },

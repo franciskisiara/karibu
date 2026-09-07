@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('residential_units', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('residence_id');
-            $table->unsignedBigInteger('unit_number');
+            $table->string('unit_number');
             $table->timestamps();
+
+            $table->unique(['residence_id', 'unit_number']);
         });
     }
 

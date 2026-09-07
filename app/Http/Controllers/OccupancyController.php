@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OccupancyStoreRequest;
+use App\Models\Occupancy;
 use App\Models\Occupant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class OccupantController extends Controller
+class OccupancyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,19 +19,27 @@ class OccupantController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(OccupancyStoreRequest $request)
     {
-        //
+        DB::transaction(function () use($request) {
+            $payload = $request->validated();
+            $residentialUnitId = $payload['residential_unit_id'];
+
+            Occupancy::where('residential_unit_id', $residentialUnitId)
+                ->where('deleted_at', null)
+                ->delete();
+
+            $occupant = $request->attributes->get('user');
+
+            Occupancy::create([
+                'user_id' => $occupant->id,
+                'residential_unit_id' => $residentialUnitId,
+            ]);
+        });
+
+        return back();
     }
 
     /**

@@ -2,33 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResidentialUnitStoreRequest;
+use App\Http\Resources\ResidentialUnitResource;
+use App\Models\Residence;
 use App\Models\ResidentialUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ResidentialUnitController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Residence $residence)
     {
-        //
-    }
+        return Inertia::render('ResidentialUnitView', [
+            'residential_units' => function () use($residence) {
+                $residentialUnits = ResidentialUnit::custodian($residence->id)
+                    ->orderBy('unit_number')
+                    ->with(['occupancies.user'])
+                    ->paginate();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+                return ResidentialUnitResource::collection($residentialUnits);
+            }
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ResidentialUnitStoreRequest $request, Residence $residence)
     {
-        //
+        $payload = $request->validated();
+
+        ResidentialUnit::create([
+            'residence_id' => $residence->id,
+            'unit_number' => $payload['unit_number'],
+        ]);
+
+        return back();
     }
 
     /**
