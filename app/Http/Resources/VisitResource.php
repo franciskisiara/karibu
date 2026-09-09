@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ResidentialUnitResource extends JsonResource
+class VisitResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,9 @@ class ResidentialUnitResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'unit_number' => $this->unit_number,
-            'residence' => ResidenceResource::make($this->whenLoaded('residence')),
-            'occupancies' => OccupancyResource::collection($this->whenLoaded('occupancies')),
+            'welcomed_at' => $this->welcomed_at?->format('d M Y'),
+            'visitor' => UserResource::make($this->whenLoaded('visitor')),
+            'occupancy' => OccupancyResource::make($this->whenLoaded('occupancy')),
         ];
     }
 }

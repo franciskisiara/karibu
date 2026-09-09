@@ -19,9 +19,7 @@ class ResidenceController extends Controller
     {
         return Inertia::render('ResidenceView', [
             'residences' => function () {
-                $residences = Residence::whereHas('custodians', function ($query) {
-                    $query->where('custodians.user_id', Auth::id());
-                })->paginate();
+                $residences = Residence::custodian()->paginate();
 
                 return ResidenceResource::collection($residences);
             }

@@ -19,8 +19,8 @@ class ResidentialUnitController extends Controller
     {
         return Inertia::render('ResidentialUnitView', [
             'residential_units' => function () use($residence) {
-                $residentialUnits = ResidentialUnit::custodian($residence->id)
-                    ->orderBy('unit_number')
+                $residentialUnits = ResidentialUnit::custodian()
+                    ->where('residence_id', $residence->id)
                     ->with(['occupancies.user'])
                     ->paginate();
 

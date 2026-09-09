@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OccupancyStoreRequest;
+use App\Http\Resources\OccupancyResource;
 use App\Models\Occupancy;
 use App\Models\Occupant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class OccupancyController extends Controller
 {
@@ -15,7 +18,15 @@ class OccupancyController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('OccupancyView', [
+            'occupancies' => function () {
+                $occupancies = Occupancy::where('user_id', Auth::id())
+                    ->with(['residentialUnit.residence'])
+                    ->paginate();
+
+                return OccupancyResource::collection($occupancies);
+            }
+        ]);
     }
 
     /**

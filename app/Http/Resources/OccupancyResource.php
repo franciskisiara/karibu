@@ -16,7 +16,8 @@ class OccupancyResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => UserResource::make($this->user)
+            'user' => UserResource::make($this->whenLoaded('user')),
+            'residential_unit' => ResidentialUnitResource::make($this->whenLoaded('residentialUnit')),
         ];
     }
 }

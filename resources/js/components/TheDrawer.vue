@@ -24,6 +24,12 @@ const navGroup = [
                 icon: 'home-group',
                 name: 'residences.index',
             },
+
+            {
+                label: 'Visits',
+                icon: 'account-group-outline',
+                name: 'visits.index',
+            },
         ],
     },
 

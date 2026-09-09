@@ -2,21 +2,33 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ResidentialUnit;
+use App\Models\Occupancy;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
-class OccupancyStoreRequest extends FormRequest
+class VisitStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return ResidentialUnit::custodian()
-            ->where('id', $this->residential_unit_id)
-            ->exists();
+        $occupancy = Occupancy::where('id', $this->occupancy_id)
+            ->where('user_id', $this->user()->id)
+            ->first();
+
+        $occupancyExists = !is_null($occupancy);
+
+        if ($occupancyExists) {
+            $this->attributes->set('occupancy', $occupancy->load([
+                'residentialUnit.residence',
+            ]));
+        }
+
+        return $occupancyExists;
     }
 
     /**
@@ -27,19 +39,20 @@ class OccupancyStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'residential_unit_id' => [
+            'occupancy_id' => [
                 'required',
             ],
 
             'email' => [
                 'required',
+                Rule::notIn([$this->user()->email]),
                 function ($attribute, $value, $fail) {
                     $user = User::where('email', $value)->first();
 
                     if (is_null($user)) {
                         $fail('The user does not exist.');
                     } else {
-                        $this->attributes->set('user', $user);
+                        $this->attributes->set('visitor', $user);
                     }
                 }
             ],

@@ -15,13 +15,10 @@ use Illuminate\Support\Facades\Auth;
 class ResidentialUnit extends Model
 {
     #[Scope]
-    protected function custodian(Builder $query, int $residenceId): void
+    protected function custodian(Builder $query): void
     {
-        $query->whereHas('residence', function ($query) use($residenceId) {
-            $query->where('residences.id', $residenceId)
-                ->whereHas('custodians', function ($query) {
-                    $query->where('custodians.user_id', Auth::id());
-                });
+        $query->whereHas('residence', function ($query) {
+            $query->custodian();
         });
     }
 
