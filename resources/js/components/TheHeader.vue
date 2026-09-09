@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import BaseLogo from '@/components/BaseLogo.vue'
-import { useAppStore } from '@/stores/AppStore'
 import HeaderProfile from '@/components/HeaderProfile.vue'
 import TheNotificationMenu from '@/components/TheNotificationMenu.vue'
+import { useAppStore } from '@/stores/AppStore'
 
 const appStore = useAppStore()
 </script>
@@ -18,7 +18,7 @@ const appStore = useAppStore()
                 style="height: 50px; width:300px; border-right: 1px solid #e0e0e0"
             >
                 <div class="col-auto">
-                    <BaseLogo small />
+                    <BaseLogo />
                 </div>
 
                 <div class="col-auto">

@@ -14,12 +14,6 @@ const navGroup = [
         title: 'Residency Management',
         links: [
             {
-                label: 'Dashboard',
-                icon: 'chart-bar',
-                name: 'dashboard',
-            },
-
-            {
                 label: 'Residences',
                 icon: 'home-group',
                 name: 'residences.index',

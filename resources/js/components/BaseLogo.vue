@@ -13,7 +13,7 @@ const props = defineProps<{
     >
         <q-avatar
             square
-            :size="props.small ? '28px' : '36px'"
+            :size="props.small ? '28px' : '32px'"
         >
             <img src="/images/logo.png" />
         </q-avatar>
@@ -23,7 +23,7 @@ const props = defineProps<{
             :class="props.small ? 'text-body2' : 'text-h6'"
             style="font-family: Montserrat; font-weight: 700; letter-spacing: 0px; margin-top: 2px;"
         >
-            App a Week
+            Karibu
         </div>
     </Link>
 </template>

@@ -24,6 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->trustHosts(at: []);
+
+        $middleware->redirectUsersTo(fn ($request) => redirectRoute($request->user()));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
